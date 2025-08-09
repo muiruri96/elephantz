@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elephantz Traders - High-End Gates and Windows</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'custom-blue': '#1a335c', // A deep, elegant blue
+              'custom-orange': '#ff7f00', // A vibrant, contrasting orange
+              'custom-grey': '#f0f0f0', // A light, modern grey
+              'dark-grey': '#333333', // For text and dark elements
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+      
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Custom scrollbar for a cleaner look */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+      
+      /* Cinematic display fade effect */
+      .cinematic-bg {
+        transition: opacity 1.5s ease-in-out;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .cinematic-bg.active {
+        opacity: 1;
+      }
+
+      /* Hover effects for catalog cards */
+      .catalog-card img {
+        transition: transform 0.3s ease-in-out;
+      }
+      .catalog-card:hover img {
+        transform: scale(1.05);
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 100; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .modal-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90vh; /* Limit height to prevent overflow on small screens */
+        background-color: #fefefe;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        animation-name: zoom;
+        animation-duration: 0.6s;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; /* Ensure image doesn't overflow rounded corners */
+        border-radius: 8px; /* Slightly rounded corners for the modal */
+      }
+
+      .modal-content img {
+        width: 100%;
+        height: auto;
+        max-height: calc(90vh - 120px); /* Adjust based on text overlay height */
+        object-fit: contain; /* Keep aspect ratio and fit within bounds */
+        display: block; /* Remove extra space below image */
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      .modal-details {
+        background-color: rgba(26, 51, 92, 0.95); /* Custom blue with opacity */
+        color: white;
+        padding: 15px 25px;
+        text-align: left;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+
+      .close-button {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      @keyframes zoom {
+        from {transform:scale(0)} 
+        to {transform:scale(1)}
+      }
+
+      /* Floating Enquire Button */
+      .floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #ff7f00; /* custom-orange */
+        color: white;
+        padding: 15px 25px;
+        border-radius: 9999px; /* Full rounded */
+        font-weight: bold;
+        font-size: 1.125rem; /* text-xl */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+        transition: transform 0.2s ease-in-out;
+        z-index: 90; /* Below modal */
+      }
+      .floating-button:hover {
+        transform: scale(1.05);
+      }
+    </style>
+</head>
+<body class="bg-custom-grey text-dark-grey font-sans">
+    
+    <header class="bg-custom-blue text-custom-grey fixed top-0 left-0 w-full z-50 shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex items-center">
+                <img src="http://googleusercontent.com/image_generation_content/3" alt="Elephantz Traders logo" class="h-10">
+				<h1 class="text-3xl font-bold text-custom-orange">Elephantz</h1>
+                <h1 class="text-3xl font-bold">Traders</h1>
+			</a>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#services" class="text-xl font-medium hover:text-custom-orange transition-colors">Services</a>
+                <a href="#catalog" class="text-xl font-medium hover:text-custom-orange transition-colors">Catalog</a>
+                <a href="#testimonials" class="text-xl font-medium hover:text-custom-orange transition-colors">Testimonials</a>
+                <a href="#contact" class="text-xl font-medium hover:text-custom-orange transition-colors">Contact</a>
+                <a href="https://wa.me/254712345678?text=Hello%20Elephantz%20Traders,%20I'd%20like%20to%20get%20a%20quotation." target="_blank" class="bg-custom-orange text-white px-6 py-3 rounded-full text-xl font-semibold shadow-lg hover:bg-opacity-80 transition-transform transform hover:scale-105">Talk to us</a>
+            </div>
+
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-8 h-8 text-custom-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        
+        <div id="mobile-menu" class="md:hidden bg-custom-blue text-custom-grey text-center py-4 space-y-4 hidden">
+            <a href="#services" class="block text-xl font-medium hover:text-custom-orange transition-colors">Services</a>
+            <a href="#catalog" class="block text-xl font-medium hover:text-custom-orange transition-colors">Catalog</a>
+            <a href="#testimonials" class="block text-xl font-medium hover:text-custom-orange transition-colors">Testimonials</a>
+            <a href="#contact" class="block text-xl font-medium hover:text-custom-orange transition-colors">Contact</a>
+            <a href="https://wa.me/254712345678?text=Hello%20Elephantz%20Traders,%20I'd%20like%20to%20get%20a%20quotation." target="_blank" class="block bg-custom-orange text-white px-6 py-3 mx-6 rounded-full text-xl font-semibold shadow-lg hover:bg-opacity-80 transition-transform transform hover:scale-105">Get a Quotation</a>
+        </div>
+    </header>
+
+    <main class="mt-20">
+
+        <section id="home" class="relative min-h-screen flex items-center justify-center text-center text-white overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="https://placehold.co/1920x1080/1a335c/ffffff?text=Elegant+Black+Wrought-Iron+Gate" alt="Elegant black wrought-iron gate with intricate scrollwork." class="cinematic-bg active">
+                <img src="https://placehold.co/1920x1080/ff7f00/ffffff?text=Modern+Steel+Framed+Window" alt="A modern home with sleek, black steel-framed windows." class="cinematic-bg">
+                <img src="https://placehold.co/1920x1080/333333/ffffff?text=Close-up+of+welding+in+a+workshop" alt="Close-up of a welding process with bright sparks and a strong weld bead." class="cinematic-bg">
+            </div>
+            
+            <div class="relative z-10 bg-custom-blue bg-opacity-70 p-10 md:p-20 rounded-lg shadow-2xl mx-4">
+                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-4 text-custom-orange font-serif">Crafting Elegance in Metal</h2>
+                <p class="text-xl md:text-2xl font-light mb-8 max-w-2xl mx-auto">
+                    We specialize in luxurious, custom-designed gates and windows that elevate your space with timeless style and unmatched quality.
+                </p>
+                <a href="#catalog" class="bg-custom-orange text-white px-8 py-4 rounded-full text-xl font-bold shadow-2xl hover:bg-opacity-90 transition-transform transform hover:scale-105">
+                    View Our Catalog
+                </a>
+            </div>
+        </section>
+
+        <section id="services" class="py-20 md:py-32 container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-custom-blue mb-12 md:mb-20 font-serif">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white rounded-lg shadow-lg p-8 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-3xl font-semibold text-custom-orange mb-4">Custom Design</h3>
+                    <p class="text-lg text-dark-grey">
+                        Our expert designers work with you to create bespoke metalwork that perfectly matches your vision and architectural style.
+                    </p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-8 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-3xl font-semibold text-custom-orange mb-4">Fabrication</h3>
+                    <p class="text-lg text-dark-grey">
+                        Using high-grade materials and precision engineering, we fabricate durable and beautiful gates, windows, and railings.
+                    </p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-8 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-3xl font-semibold text-custom-orange mb-4">Installation</h3>
+                    <p class="text-lg text-dark-grey">
+                        Our professional team ensures a seamless installation process, guaranteeing perfect fit and function for every project.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="catalog" class="py-20 md:py-32 container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-custom-blue mb-12 md:mb-20 font-serif">Our Catalog</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden catalog-card cursor-pointer" 
+                     data-image="http://googleusercontent.com/image_generation_content/11" 
+                     data-title="Residential Wrought-Iron Gate" 
+                     data-description="A timeless, hand-forged wrought-iron gate with intricate scrollwork, providing both security and majestic curb appeal for your home.">
+                    <div class="overflow-hidden">
+                        <img src="http://googleusercontent.com/image_generation_content/11" alt="A classic black wrought-iron residential gate with ornate scrollwork." class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-custom-blue mb-2">Residential Wrought-Iron Gate</h3>
+                        <p class="text-dark-grey text-lg">
+                            A classic wrought-iron gate with intricate scrollwork, providing security and curb appeal.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden catalog-card cursor-pointer" 
+                     data-image="http://googleusercontent.com/image_generation_content/8" 
+                     data-title="Modern Steel-Frame Window" 
+                     data-description="Sleek and minimalist steel-frame windows that maximize natural light and create a striking, contemporary look for any building.">
+                    <div class="overflow-hidden">
+                        <img src="http://googleusercontent.com/image_generation_content/8" alt="Sleek, minimalist steel-frame windows on a modern architectural building." class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-custom-blue mb-2">Modern Steel-Frame Window</h3>
+                        <p class="text-dark-grey text-lg">
+                            Sleek and minimalist steel-frame windows for a contemporary architectural design.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden catalog-card cursor-pointer" 
+                     data-image="http://googleusercontent.com/image_generation_content/7" 
+                     data-title="Custom Commercial Entry Gate" 
+                     data-description="A robust and elegant gate designed for a commercial property, combining high-level security with a sophisticated, professional aesthetic.">
+                    <div class="overflow-hidden">
+                        <img src="http://googleusercontent.com/image_generation_content/7" alt="A robust and elegant entry gate for a commercial property." class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-custom-blue mb-2">Custom Commercial Entry Gate</h3>
+                        <p class="text-dark-grey text-lg">
+                            A robust and elegant gate designed for a commercial property, combining security with a sophisticated look.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden catalog-card cursor-pointer" 
+                     data-image="http://googleusercontent.com/image_generation_content/14" 
+                     data-title="Artisanal Balcony Railings" 
+                     data-description="Beautifully crafted metal railings that add a touch of luxury and safety to any balcony or staircase, designed to your specifications.">
+                    <div class="overflow-hidden">
+                        <img src="http://googleusercontent.com/image_generation_content/14" alt="Artisanal metal balcony railings with a unique geometric pattern." class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-custom-blue mb-2">Artisanal Balcony Railings</h3>
+                        <p class="text-dark-grey text-lg">
+                            Beautifully crafted railings that add a touch of luxury to any balcony.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden catalog-card cursor-pointer" 
+                     data-image="http://googleusercontent.com/image_generation_content/9" 
+                     data-title="Geometric Security Windows" 
+                     data-description="Strong, high-grade security windows featuring a unique geometric design that merges contemporary style with uncompromised protection.">
+                    <div class="overflow-hidden">
+                        <img src="http://googleusercontent.com/image_generation_content/9" alt="Strong security windows with a unique geometric pattern for a modern home." class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-custom-blue mb-2">Geometric Security Windows</h3>
+                        <p class="text-dark-grey text-lg">
+                            Strong security windows with a unique geometric design for modern homes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden catalog-card cursor-pointer" 
+                     data-image="http://googleusercontent.com/image_generation_content/12" 
+                     data-title="Sleek Sliding Gates" 
+                     data-description="Automated sliding gates that offer unparalleled convenience and a clean, elegant look for a sophisticated property entrance.">
+                    <div class="overflow-hidden">
+                        <img src="http://googleusercontent.com/image_generation_content/12" alt="A sleek, automated sliding gate for a clean and elegant property entrance." class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-custom-blue mb-2">Sleek Sliding Gates</h3>
+                        <p class="text-dark-grey text-lg">
+                            Automated sliding gates that offer convenience and a clean, elegant look.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="bg-white py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center text-custom-blue mb-12 md:mb-20 font-serif">What Our Clients Say</h2>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="bg-custom-grey p-8 rounded-lg shadow-lg flex-1">
+                        <p class="text-lg italic text-dark-grey mb-4">"The gate from Elephantz Traders is an absolute masterpiece. The craftsmanship is flawless and it completely transformed the entrance of our home. Highly recommended!"</p>
+                        <p class="text-right font-semibold text-custom-orange">- Jane D., Happy Client</p>
+                    </div>
+                    <div class="bg-custom-grey p-8 rounded-lg shadow-lg flex-1">
+                        <p class="text-lg italic text-dark-grey mb-4">"We couldn't be happier with our new windows. The design is modern and elegant, and the quality is second to none. Elephantz Traders provided excellent service from start to finish."</p>
+                        <p class="text-right font-semibold text-custom-orange">- Mark R., Business Owner</p>
+                    </div>
+                    <div class="bg-custom-grey p-8 rounded-lg shadow-lg flex-1">
+                        <p class="text-lg italic text-dark-grey mb-4">"Their attention to detail is remarkable. The custom gate they built for us is not only secure but also a beautiful piece of art. A truly luxurious service."</p>
+                        <p class="text-right font-semibold text-custom-orange">- Sarah L., Homeowner</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 md:py-32 bg-custom-blue text-custom-grey text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 font-serif">Ready to Start Your Project?</h2>
+                <p class="text-xl md:text-2xl mb-8">
+                    Get a personalized quotation for your high-end gates and windows today.
+                </p>
+                <a href="https://wa.me/254712345678?text=Hello%20Elephantz%20Traders,%20I'd%20like%20to%20get%20a%20quotation." target="_blank" class="bg-custom-orange text-white px-10 py-5 rounded-full text-2xl font-bold shadow-2xl hover:bg-opacity-90 transition-transform transform hover:scale-110">
+                    Get a Quotation
+                </a>
+                <div class="mt-12 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div>
+                        <p class="text-lg font-medium">Email:</p>
+                        <a href="mailto:info@elephantztraders.com" class="text-xl hover:text-custom-orange transition-colors">info@elephantztraders.com</a>
+                    </div>
+                    <div>
+                        <p class="text-lg font-medium">Phone:</p>
+                        <a href="tel:+254712345678" class="text-xl hover:text-custom-orange transition-colors">+254 (712) 345-678</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-dark-grey text-custom-grey text-center py-8">
+        <p class="text-lg">&copy; 2025 Elephantz Traders. All rights reserved.</p>
+    </footer>
+
+    <div id="imageModal" class="modal">
+        <span class="close-button">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Full size image of catalog item">
+            <div class="modal-details">
+                <h3 id="modalTitle" class="text-2xl font-semibold mb-2"></h3>
+                <p id="modalDescription" class="text-lg"></p>
+            </div>
+        </div>
+        <a id="modalEnquireButton" href="" target="_blank" class="floating-button">Enquire About This</a>
+    </div>
+
+    <script>
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+              e.preventDefault();
+
+              document.querySelector(this.getAttribute('href')).scrollIntoView({
+                  behavior: 'smooth'
+              });
+
+              // Close mobile menu after clicking a link
+              const mobileMenu = document.getElementById('mobile-menu');
+              if (!mobileMenu.classList.contains('hidden')) {
+                  mobileMenu.classList.add('hidden');
+              }
+          });
+      });
+
+      // Cinematic display logic
+      const cinematicImages = document.querySelectorAll('.cinematic-bg');
+      let currentIndex = 0;
+
+      function showNextImage() {
+        cinematicImages[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % cinematicImages.length;
+        cinematicImages[currentIndex].classList.add('active');
+      }
+
+      setInterval(showNextImage, 5000); // Change image every 5 seconds
+
+      // Mobile menu toggle
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      mobileMenuButton.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+      });
+
+      // Modal Logic
+      const modal = document.getElementById("imageModal");
+      const closeButton = document.querySelector(".close-button");
+      const modalImage = document.getElementById("modalImage");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDescription = document.getElementById("modalDescription");
+      const modalEnquireButton = document.getElementById("modalEnquireButton");
+
+      document.querySelectorAll('.catalog-card').forEach(card => {
+          card.addEventListener('click', function() {
+              const imageUrl = this.dataset.image;
+              const title = this.dataset.title;
+              const description = this.dataset.description;
+              const whatsappMessage = encodeURIComponent(`Tell me more about the product: ${title}`);
+              const whatsappLink = `https://wa.me/254712345678?text=${whatsappMessage}`; // Replace with your WhatsApp number
+
+              modalImage.src = imageUrl;
+              modalImage.alt = title; // Use title for alt text in modal
+              modalTitle.textContent = title;
+              modalDescription.textContent = description;
+              modalEnquireButton.href = whatsappLink;
+              modal.style.display = "flex"; // Use flex to center content
+          });
+      });
+
+      // When the user clicks on <span> (x), close the modal
+      closeButton.addEventListener('click', function() {
+          modal.style.display = "none";
+      });
+
+      // When the user clicks anywhere outside of the modal content, close it
+      window.addEventListener('click', function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      });
+    </script>
+</body>
+</html>
